@@ -35,4 +35,21 @@ public class InputService {
             }
         } while (!bridgeResult.contains("X") && bridgeResult.size() != bridgeGame.getBridge().size());
     }
+
+    public void retry(Supplier<String> inputSupplier, Runnable retryGame,
+                      Consumer<String> errorMessagePrinter) {
+        while (true) {
+            try {
+                String input = inputSupplier.get();
+                if (input.equals("R")) {
+                    retryGame.run();
+                }
+                else if (input.equals("Q")) {
+                    break;
+                }
+            } catch (IllegalArgumentException e) {
+                errorMessagePrinter.accept(e.getMessage());
+            }
+        }
+    }
 }
