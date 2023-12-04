@@ -52,7 +52,35 @@ public class BridgeGame implements Subject {
     }
 
     public BridgeGameDto toDto() {
-        return new BridgeGameDto(crossResult, userChoice);
+        return new BridgeGameDto(bridge, crossResult, userChoice, createResultMap());
+    }
+
+    private String createResultMap() {
+        StringBuilder line1 = new StringBuilder("[");
+        StringBuilder line2 = new StringBuilder("[");
+
+
+        for (int i = 0; i < crossResult.size(); i++) {
+            if (userChoice.get(i).equals("U")) {
+                line1.append(" ").append(crossResult.get(i)).append(" ");
+                line2.append("   ");
+            }
+            else if (userChoice.get(i).equals("D")) {
+                line1.append("   ");
+                line2.append(" ").append(crossResult.get(i)).append(" ");
+            }
+            if (i < crossResult.size() - 1) {
+                line1.append("|");
+                line2.append("|");
+            }
+        }
+
+        line1.append("]");
+        line2.append("]");
+
+        StringBuilder result = new StringBuilder();
+        result.append(line1).append("\n").append(line2);
+        return result.toString();
     }
 
 

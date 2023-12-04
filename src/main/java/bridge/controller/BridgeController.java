@@ -1,5 +1,6 @@
 package bridge.controller;
 
+import bridge.Bridge;
 import bridge.BridgeGame;
 import bridge.BridgeGameDto;
 import bridge.observer.Observer;
@@ -11,22 +12,45 @@ import java.util.List;
 
 public class BridgeController implements Observer {
     private final InputService inputService = new InputService();
-    private List<String> bridge;
+    private Bridge bridge;
+    private BridgeGame bridgeGame;
 
     public void run() {
+        OutputView.printWelcomeMessage();
         bridge = initGame();
         playGame();
-        inputService.retry(InputView::readGameCommand, this::playGame, OutputView::printError);
     }
 
-    private List<String> initGame() {
+    private Bridge initGame() {
         return inputService.getBridgeSize(InputView::readBridgeSize, OutputView::printError);
     }
 
     private void playGame() {
-        BridgeGame bridgeGame = new BridgeGame(bridge);
+        bridge.plusOneTryCount();
+        bridgeGame = new BridgeGame(bridge.toDto().bridge());
         bridgeGame.addObserver(this);
-        inputService.getMoving(InputView::readMoving, OutputView::printError, bridgeGame);
+        bridgeGame = inputService.getMoving(InputView::readMoving, OutputView::printError, bridgeGame);
+        checkGameEnd();
+    }
+
+    private void retryGame() {
+        inputService.retry(InputView::readGameCommand, this::playGame, OutputView::printError);
+    }
+
+    private void checkGameEnd() {
+        if (bridgeGame.getCrossResult().size() == bridgeGame.getBridge().size() && !bridgeGame.getCrossResult().contains("X")) {
+            bridge.answerCorrect();
+            gameResult();
+            return;
+        }
+        else if (bridgeGame.getCrossResult().size() != bridgeGame.getBridge().size() || bridgeGame.getCrossResult().contains("X")) {
+            retryGame();
+        }
+        gameResult();
+    }
+
+    private void gameResult() {
+        OutputView.printResult(bridgeGame.toDto(), bridge.toDto());
     }
 
     @Override
