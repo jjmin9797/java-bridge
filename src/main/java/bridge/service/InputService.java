@@ -1,6 +1,9 @@
 package bridge.service;
 
 import bridge.*;
+import bridge.domain.Bridge;
+import bridge.domain.BridgeGame;
+import bridge.BridgeMaker;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -21,7 +24,7 @@ public class InputService {
     }
 
     public BridgeGame getMoving(Supplier<String> inputSupplier,
-                                      Consumer<String> errorMessagePrinter, BridgeGame bridgeGame) {
+                                Consumer<String> errorMessagePrinter, BridgeGame bridgeGame) {
         List<String> bridgeResult = bridgeGame.getCrossResult();
         do {
             try {
@@ -33,11 +36,6 @@ public class InputService {
         } while (!bridgeResult.contains("X") && bridgeResult.size() != bridgeGame.getBridge().size());
 
         return bridgeGame;
-    }
-
-    public void checkGameFinish(BridgeGame bridgeGame) {
-        if (bridgeGame.getBridge() == bridgeGame.getCrossResult()) {
-        }
     }
 
     public void retry(Supplier<String> inputSupplier, Runnable retryGame,

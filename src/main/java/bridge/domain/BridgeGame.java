@@ -1,4 +1,4 @@
-package bridge;
+package bridge.domain;
 
 import bridge.dto.BridgeGameDto;
 import bridge.observer.Observer;
@@ -78,9 +78,7 @@ public class BridgeGame implements Subject {
         line1.append("]");
         line2.append("]");
 
-        StringBuilder result = new StringBuilder();
-        result.append(line1).append("\n").append(line2);
-        return result.toString();
+        return line1 + "\n" + line2;
     }
 
 
