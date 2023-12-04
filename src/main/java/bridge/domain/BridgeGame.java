@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static bridge.config.AnswerSetting.ANSWER_CORRECT;
+import static bridge.config.AnswerSetting.ANSWER_INCORRECT;
+import static bridge.config.KeySetting.*;
+
 /**
  * 다리 건너기 게임을 관리하는 클래스
  */
@@ -16,7 +20,6 @@ public class BridgeGame implements Subject {
     private final List<String> bridge;
     private final List<String> crossResult = new ArrayList<>();
     private final List<String> userChoice = new ArrayList<>();
-    private final Map<Integer, List<String>> crossResult2 = new HashMap<>();
     private int moveCount;
     private final List<Observer> observers = new ArrayList<>();
 
@@ -29,12 +32,12 @@ public class BridgeGame implements Subject {
         String answer = bridge.get(moveCount);
         userChoice.add(input);
         if (input.equals(answer)) {
-            crossResult.add("O");
+            crossResult.add(ANSWER_CORRECT.getAnswer());
             moveCount++;
             notifyObservers();
             return;
         }
-        crossResult.add("X");
+        crossResult.add(ANSWER_INCORRECT.getAnswer());
         moveCount++;
         notifyObservers();
     }
@@ -47,10 +50,6 @@ public class BridgeGame implements Subject {
         return crossResult;
     }
 
-    public List<String> getUserChoice() {
-        return userChoice;
-    }
-
     public BridgeGameDto toDto() {
         return new BridgeGameDto(bridge, crossResult, userChoice, createResultMap());
     }
@@ -61,11 +60,11 @@ public class BridgeGame implements Subject {
 
 
         for (int i = 0; i < crossResult.size(); i++) {
-            if (userChoice.get(i).equals("U")) {
+            if (userChoice.get(i).equals(KEY_UP.getKey())) {
                 line1.append(" ").append(crossResult.get(i)).append(" ");
                 line2.append("   ");
             }
-            else if (userChoice.get(i).equals("D")) {
+            else if (userChoice.get(i).equals(KEY_DOWN.getKey())) {
                 line1.append("   ");
                 line2.append(" ").append(crossResult.get(i)).append(" ");
             }
@@ -78,17 +77,7 @@ public class BridgeGame implements Subject {
         line1.append("]");
         line2.append("]");
 
-        return line1 + "\n" + line2;
-    }
-
-
-
-    /**
-     * 사용자가 게임을 다시 시도할 때 사용하는 메서드
-     * <p>
-     * 재시작을 위해 필요한 메서드의 반환 타입(return type), 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
-     */
-    public void retry() {
+        return line1 + "\n" + line2 + "\n";
     }
 
     @Override

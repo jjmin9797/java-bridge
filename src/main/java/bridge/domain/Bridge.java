@@ -4,10 +4,13 @@ import bridge.dto.BridgeDto;
 
 import java.util.List;
 
+import static bridge.config.AnswerSetting.MESSAGE_CORRECT;
+import static bridge.config.AnswerSetting.MESSAGE_INCORRECT;
+
 public class Bridge {
     private final List<String> bridge;
     private int tryCount;
-    private String correct = "실패";
+    private String correct = MESSAGE_INCORRECT.getAnswer();
 
     public Bridge(List<String> bridge) {
         this.bridge = bridge;
@@ -23,6 +26,6 @@ public class Bridge {
     }
 
     public void answerCorrect() {
-        correct = "성공";
+        correct = MESSAGE_CORRECT.getAnswer();
     }
 }

@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static bridge.config.AnswerSetting.ANSWER_INCORRECT;
+import static bridge.config.KeySetting.KEY_QUIT;
+import static bridge.config.KeySetting.KEY_RESTART;
+
 public class InputService {
     public Bridge getBridgeSize(Supplier<String> inputSupplier,
                                 Consumer<String> errorMessagePrinter) {
@@ -33,7 +37,8 @@ public class InputService {
             } catch (IllegalArgumentException e) {
                 errorMessagePrinter.accept(e.getMessage());
             }
-        } while (!bridgeResult.contains("X") && bridgeResult.size() != bridgeGame.getBridge().size());
+        } while (!bridgeResult.contains(ANSWER_INCORRECT.getAnswer()) &&
+                bridgeResult.size() != bridgeGame.getBridge().size());
 
         return bridgeGame;
     }
@@ -43,10 +48,10 @@ public class InputService {
         while (true) {
             try {
                 String input = inputSupplier.get();
-                if (input.equals("R")) {
+                if (input.equals(KEY_RESTART.getKey())) {
                     retryGame.run();
                 }
-                else if (input.equals("Q")) {
+                else if (input.equals(KEY_QUIT.getKey())) {
                     break;
                 }
             } catch (IllegalArgumentException e) {

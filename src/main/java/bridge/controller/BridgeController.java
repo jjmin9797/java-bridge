@@ -8,6 +8,8 @@ import bridge.service.InputService;
 import bridge.view.InputView;
 import bridge.view.OutputView;
 
+import static bridge.config.AnswerSetting.ANSWER_INCORRECT;
+
 public class BridgeController implements Observer {
     private final InputService inputService = new InputService();
     private Bridge bridge;
@@ -36,12 +38,14 @@ public class BridgeController implements Observer {
     }
 
     private void checkGameEnd() {
-        if (bridgeGame.getCrossResult().size() == bridgeGame.getBridge().size() && !bridgeGame.getCrossResult().contains("X")) {
+        if (bridgeGame.getCrossResult().size() == bridgeGame.getBridge().size() &&
+                !bridgeGame.getCrossResult().contains(ANSWER_INCORRECT.getAnswer())) {
             bridge.answerCorrect();
             gameResult();
             return;
         }
-        else if (bridgeGame.getCrossResult().size() != bridgeGame.getBridge().size() || bridgeGame.getCrossResult().contains("X")) {
+        else if (bridgeGame.getCrossResult().size() != bridgeGame.getBridge().size()
+                || bridgeGame.getCrossResult().contains(ANSWER_INCORRECT.getAnswer())) {
             retryGame();
         }
         gameResult();
