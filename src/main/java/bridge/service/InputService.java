@@ -1,5 +1,6 @@
 package bridge.service;
 
+import bridge.BridgeGame;
 import bridge.BridgeMaker;
 import bridge.BridgeNumberGenerator;
 import bridge.BridgeRandomNumberGenerator;
@@ -20,5 +21,18 @@ public class InputService {
                 errorMessagePrinter.accept(e.getMessage());
             }
         }
+    }
+
+    public void getMoving(Supplier<String> inputSupplier,
+                                      Consumer<String> errorMessagePrinter, BridgeGame bridgeGame) {
+        List<String> bridgeResult = bridgeGame.getCrossResult();
+        do {
+            try {
+                bridgeGame.move(inputSupplier.get());
+                bridgeResult = bridgeGame.getCrossResult();
+            } catch (IllegalArgumentException e) {
+                errorMessagePrinter.accept(e.getMessage());
+            }
+        } while (!bridgeResult.contains("X") && bridgeResult.size() != bridgeGame.getBridge().size());
     }
 }
