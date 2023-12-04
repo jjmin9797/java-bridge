@@ -1,5 +1,7 @@
 package bridge;
 
+import bridge.dto.BridgeDto;
+
 import java.util.List;
 
 public class Bridge {

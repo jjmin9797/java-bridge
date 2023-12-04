@@ -1,6 +1,6 @@
 package bridge;
 
-import bridge.BridgeGameDto;
+import bridge.dto.BridgeGameDto;
 import bridge.observer.Observer;
 import bridge.observer.Subject;
 

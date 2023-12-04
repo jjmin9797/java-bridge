@@ -2,13 +2,11 @@ package bridge.controller;
 
 import bridge.Bridge;
 import bridge.BridgeGame;
-import bridge.BridgeGameDto;
+import bridge.dto.BridgeGameDto;
 import bridge.observer.Observer;
 import bridge.service.InputService;
 import bridge.view.InputView;
 import bridge.view.OutputView;
-
-import java.util.List;
 
 public class BridgeController implements Observer {
     private final InputService inputService = new InputService();
